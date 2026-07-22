@@ -1,0 +1,38 @@
+{
+  "testids": [
+    "about-cta",
+    "about-heading",
+    "about-main",
+    "add-recipe-link",
+    "app-ready",
+    "brand-link",
+    "cancel-link",
+    "create-button",
+    "empty-add-link",
+    "nav-",
+    "nav-about",
+    "nav-recipes",
+    "new-recipe-form",
+    "new-recipe-main",
+    "recipe-row",
+    "recipe-title",
+    "recipes-empty",
+    "recipes-heading",
+    "recipes-list",
+    "recipes-loading",
+    "recipes-main",
+    "tab-",
+    "tab-about",
+    "tab-add",
+    "tab-recipes",
+    "title-error"
+  ],
+  "headings": [
+    "404",
+    "About Recipe Box",
+    "Add a Recipe",
+    "My Recipes",
+    "This page could not be found."
+  ],
+  "source_dir": "/workspace/mockups/008bc92c-3744-403f-aadd-e2afd1bd44ec"
+}

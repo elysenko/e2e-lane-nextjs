@@ -1,9 +1,17 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import React from 'react';
+import './globals.css';
+import { TopNav, TabBar } from './components/nav';
 
 export const metadata: Metadata = {
-  title: 'Colossus App',
-  description: 'Scaffolded by Colossus (template-nextjs-fullstack)',
+  title: 'Recipe Box',
+  description: 'Browse and add your favourite recipes.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -11,7 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <div data-testid="app-ready">{children}</div>
+        <div data-testid="app-ready" className="app-shell">
+          <TopNav />
+          <main className="main">{children}</main>
+          <TabBar />
+        </div>
       </body>
     </html>
   );

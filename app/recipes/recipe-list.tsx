@@ -1,33 +1,13 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getRecipes, type Recipe } from '@/lib/recipes-store';
+import type { Recipe } from '@/lib/recipes';
 
 /**
- * Client renderer for the recipe list (mockup data layer).
- * Backend swap: replace this with server-rendered rows from
- * `ensureSeeded()` + a `SELECT * FROM recipes` in `app/recipes/page.tsx`.
+ * Server-rendered recipe list. Rows come from the database
+ * (`ensureSeeded()` + `listRecipes()` in `app/recipes/page.tsx`), so the list
+ * is populated on first paint with no client fetch.
  */
-export function RecipeList() {
-  const [recipes, setRecipes] = useState<Recipe[] | null>(null);
-
-  useEffect(() => {
-    setRecipes(getRecipes());
-  }, []);
-
-  // Loading state (first client paint)
-  if (recipes === null) {
-    return (
-      <ul className="recipe-list" aria-hidden="true" data-testid="recipes-loading">
-        {[0, 1, 2].map((i) => (
-          <li key={i} className="skeleton-row" />
-        ))}
-      </ul>
-    );
-  }
-
-  // Empty state (shouldn't happen thanks to seeding, but handled anyway)
+export function RecipeList({ recipes }: { recipes: Recipe[] }) {
+  // Empty state (shouldn't happen thanks to seeding, but handled anyway).
   if (recipes.length === 0) {
     return (
       <div className="state-card" data-testid="recipes-empty">

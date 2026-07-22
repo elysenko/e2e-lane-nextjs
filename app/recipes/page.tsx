@@ -1,11 +1,18 @@
 import Link from 'next/link';
 import { RecipeList } from './recipe-list';
+import { ensureSeeded, listRecipes } from '@/lib/recipes';
 
 export const metadata = {
   title: 'My Recipes · Recipe Box',
 };
 
-export default function RecipesPage() {
+// Recipes are read from the database on every request; never statically cached.
+export const dynamic = 'force-dynamic';
+
+export default async function RecipesPage() {
+  await ensureSeeded();
+  const recipes = await listRecipes();
+
   return (
     <div data-testid="recipes-main">
       <div className="page-head">
@@ -20,7 +27,7 @@ export default function RecipesPage() {
         </Link>
       </div>
 
-      <RecipeList />
+      <RecipeList recipes={recipes} />
     </div>
   );
 }

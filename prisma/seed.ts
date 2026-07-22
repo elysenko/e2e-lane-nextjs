@@ -23,6 +23,24 @@ const SEED_USERS: Array<{ email: string; name: string; role: Role }> = [
   { email: 'user@example.com', name: 'Regular User', role: Role.USER },
 ];
 
+const SEED_RECIPES = [
+  {
+    title: 'Classic Margherita Pizza',
+    description: 'Blistered dough, San Marzano tomatoes, fresh mozzarella and basil.',
+    emoji: '🍕',
+  },
+  {
+    title: 'Weeknight Veggie Stir-Fry',
+    description: 'Crisp seasonal vegetables tossed in garlic-ginger soy sauce over rice.',
+    emoji: '🥦',
+  },
+  {
+    title: 'Grandma’s Banana Bread',
+    description: 'Moist, lightly spiced loaf made with over-ripe bananas and walnuts.',
+    emoji: '🍌',
+  },
+];
+
 async function main(): Promise<void> {
   const creds: Array<{ role: string; email: string; password: string }> = [];
   for (const u of SEED_USERS) {
@@ -36,6 +54,15 @@ async function main(): Promise<void> {
     creds.push({ role: u.role, email: u.email, password });
   }
   console.log(`SEED_CREDS_JSON ${JSON.stringify(creds)}`);
+
+  // Seed the 3 example recipes only when the table is empty (idempotent). The
+  // app also self-seeds at runtime (lib/recipes.ensureSeeded), so the recipe
+  // list is never empty even if this job is skipped.
+  const recipeCount = await prisma.recipe.count();
+  if (recipeCount === 0) {
+    await prisma.recipe.createMany({ data: SEED_RECIPES });
+    console.log(`SEED_RECIPES ${SEED_RECIPES.length}`);
+  }
 }
 
 main()

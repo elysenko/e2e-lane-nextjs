@@ -1,36 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { addRecipe } from '@/lib/recipes-store';
+import { createRecipe } from '../actions';
 
 /**
- * Add Recipe form.
- *
- * Mockup wiring: uses the client `addRecipe()` store so the flow works in the
- * preview. Backend/service swap: bind this form to the `createRecipe(formData)`
- * server action (`app/recipes/actions.ts`) via `<form action={createRecipe}>`;
- * the action validates the title, inserts the row, `revalidatePath('/recipes')`
- * and `redirect('/recipes')`.
+ * Add Recipe form. Bound to the `createRecipe` server action
+ * (`app/recipes/actions.ts`) via `useActionState`: the action validates the
+ * title, inserts the row, `revalidatePath('/recipes')` and
+ * `redirect('/recipes')`. A blank title returns an inline error.
  */
-export default function NewRecipePage() {
-  const router = useRouter();
-  const [title, setTitle] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      className="btn btn-primary"
+      data-testid="create-button"
+      disabled={pending}
+    >
+      {pending ? 'Saving…' : 'Create'}
+    </button>
+  );
+}
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (title.trim().length === 0) {
-      setError('Please enter a title for your recipe.');
-      return;
-    }
-    setError(null);
-    setSubmitting(true);
-    addRecipe(title);
-    router.push('/recipes');
-  }
+export default function NewRecipePage() {
+  const [state, formAction] = useActionState(createRecipe, {});
+  const error = state?.error;
 
   return (
     <div data-testid="new-recipe-main">
@@ -42,7 +39,7 @@ export default function NewRecipePage() {
       </div>
 
       <div className="card">
-        <form onSubmit={handleSubmit} data-testid="new-recipe-form" noValidate>
+        <form action={formAction} data-testid="new-recipe-form">
           <div className="form-field">
             <label className="form-label" htmlFor="title">
               Title
@@ -53,11 +50,6 @@ export default function NewRecipePage() {
               className="form-input"
               type="text"
               placeholder="e.g. Lemon Garlic Roast Chicken"
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-                if (error) setError(null);
-              }}
               aria-invalid={error ? 'true' : 'false'}
               aria-describedby={error ? 'title-error' : undefined}
               autoFocus
@@ -72,14 +64,7 @@ export default function NewRecipePage() {
           </div>
 
           <div className="form-actions">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              data-testid="create-button"
-              disabled={submitting}
-            >
-              {submitting ? 'Saving…' : 'Create'}
-            </button>
+            <SubmitButton />
             <Link href="/recipes" className="btn btn-ghost" data-testid="cancel-link">
               Cancel
             </Link>

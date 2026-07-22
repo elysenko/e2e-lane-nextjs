@@ -1,5 +1,5 @@
 {
   "ready_testid": "app-ready",
-  "expect_text": [],
+  "expect_text": ["my recipes", "everything in your box"],
   "reject_signatures": ["Colossus Next.js scaffold", "Replace this page with the real application UI."]
 }

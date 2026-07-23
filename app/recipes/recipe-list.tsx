@@ -18,7 +18,7 @@ export function RecipeList({ recipes }: { recipes: Recipe[] }) {
         <p>Add your first recipe to get started.</p>
         <p style={{ marginTop: 18 }}>
           <Link href="/recipes/new" className="btn btn-primary" data-testid="empty-add-link">
-            + Add Recipe
+            + New Recipe
           </Link>
         </p>
       </div>

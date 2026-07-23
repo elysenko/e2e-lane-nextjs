@@ -23,7 +23,7 @@ export default async function RecipesPage() {
           <p className="page-sub">Everything in your box, all in one place.</p>
         </div>
         <Link href="/recipes/new" className="btn btn-primary" data-testid="add-recipe-link">
-          + Add Recipe
+          + New Recipe
         </Link>
       </div>
 

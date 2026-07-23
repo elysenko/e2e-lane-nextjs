@@ -3,7 +3,7 @@ import { RecipeList } from './recipe-list';
 import { ensureSeeded, listRecipes } from '@/lib/recipes';
 
 export const metadata = {
-  title: 'My Recipes · Recipe Box',
+  title: 'My Recipe Collection · Recipe Box',
 };
 
 // Recipes are read from the database on every request; never statically cached.
@@ -18,7 +18,7 @@ export default async function RecipesPage() {
       <div className="page-head">
         <div>
           <h1 className="page-title" data-testid="recipes-heading">
-            My Recipes
+            My Recipe Collection
           </h1>
           <p className="page-sub">Everything in your box, all in one place.</p>
         </div>

@@ -4,14 +4,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const NAV_ITEMS = [
-  { href: '/recipes', label: 'Recipes' },
-  { href: '/about', label: 'About' },
+  { href: '/recipes', label: 'Recipes', testid: 'nav-recipes' },
+  { href: '/about', label: 'About', testid: 'nav-about' },
 ];
 
 const TAB_ITEMS = [
-  { href: '/recipes', label: 'Recipes', icon: '📖', fab: false },
-  { href: '/recipes/new', label: 'Add', icon: '＋', fab: true },
-  { href: '/about', label: 'About', icon: 'ℹ️', fab: false },
+  { href: '/recipes', label: 'Recipes', icon: '📖', fab: false, testid: 'tab-recipes' },
+  { href: '/recipes/new', label: 'Add', icon: '＋', fab: true, testid: 'tab-add' },
+  { href: '/about', label: 'About', icon: 'ℹ️', fab: false, testid: 'tab-about' },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -38,7 +38,7 @@ export function TopNav() {
             key={item.href}
             href={item.href}
             className={`nav-link${isActive(pathname, item.href) ? ' active' : ''}`}
-            data-testid={`nav-${item.label.toLowerCase()}`}
+            data-testid={item.testid}
           >
             {item.label}
           </Link>
@@ -60,7 +60,7 @@ export function TabBar() {
           className={`tab${item.fab ? ' tab-fab' : ''}${
             isActive(pathname, item.href) ? ' active' : ''
           }`}
-          data-testid={`tab-${item.label.toLowerCase()}`}
+          data-testid={item.testid}
         >
           <span className="tab-icon" aria-hidden="true">
             {item.icon}
